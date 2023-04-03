@@ -1,14 +1,14 @@
-import React from "react";
-import makeClass from "clsx";
-import { Element } from "@design-systems/utils";
+import * as React from 'react';
+import makeClass from 'clsx';
+import { Element } from '@design-systems/utils';
 
-export const colorSchemes = ["light", "dark"] as const;
-export type ColorScheme = typeof colorSchemes[number];
+export const colorSchemes = ['light', 'dark'] as const;
+export type ColorScheme = (typeof colorSchemes)[number];
 
-export const themes = ["chrome", "firefox"] as const;
-export type Theme = typeof themes[number];
+export const themes = ['chrome', 'firefox'] as const;
+export type Theme = (typeof themes)[number];
 
-const isWindowDefined = typeof window !== "undefined";
+const isWindowDefined = typeof window !== 'undefined';
 
 /**
  * Get all of the props for an HTML element + add the theme props.
@@ -26,14 +26,12 @@ export interface Themeable {
   theme?: Theme;
 }
 
-export type ThemeableElement<T extends keyof JSX.IntrinsicElements> = Element<
-  T
-> &
-  Themeable;
+export type ThemeableElement<T extends keyof JSX.IntrinsicElements> =
+  Element<T> & Themeable;
 
 export const ThemeContext = React.createContext<Themeable>({
-  theme: "chrome",
-  colorScheme: "light",
+  theme: 'chrome',
+  colorScheme: 'light',
 });
 
 /**
@@ -43,7 +41,7 @@ export const ThemeContext = React.createContext<Themeable>({
 export const useDarkMode = () => {
   const [darkMode, setDarkMode] = React.useState(
     isWindowDefined && window
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? window.matchMedia('(prefers-color-scheme: dark)').matches
       : false
   );
 
@@ -52,7 +50,7 @@ export const useDarkMode = () => {
       return;
     }
 
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
     /** Run when the user changes this setting. */
     const changeDarkMode = () => setDarkMode(!darkMode);
@@ -96,9 +94,9 @@ export const useTheme = (
 ) => {
   const themeContext = React.useContext(ThemeContext);
 
-  const currentTheme = props.theme || themeContext.theme || "chrome";
+  const currentTheme = props.theme || themeContext.theme || 'chrome';
   const currentColorScheme =
-    props.colorScheme || themeContext.colorScheme || "light";
+    props.colorScheme || themeContext.colorScheme || 'light';
   const themeClass = makeClass(
     styles[currentTheme],
     styles[currentColorScheme]
@@ -124,5 +122,5 @@ interface LightDarkTheme {
 
 type CustomTheme = BasicTheme | LightDarkTheme;
 
-export type ComponentTheme = Required<Record<"chrome", CustomTheme>> &
+export type ComponentTheme = Required<Record<'chrome', CustomTheme>> &
   Partial<Record<Theme, CustomTheme>>;

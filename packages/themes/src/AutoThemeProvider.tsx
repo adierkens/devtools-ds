@@ -1,13 +1,13 @@
-import React from "react";
-import { all } from "./themes";
-import { ThemeableElement, ThemeContext } from "./utils";
+import * as React from 'react';
+import { all } from './themes';
+import { ThemeableElement, ThemeContext } from './utils';
 
-const isWindowDefined = typeof window !== "undefined";
+const isWindowDefined = typeof window !== 'undefined';
 
 /** Determine if the current browser is FireFox */
 export const isFirefox = () => {
   if (isWindowDefined && window?.navigator?.userAgent) {
-    if (window.navigator.userAgent.toLowerCase().includes("firefox")) {
+    if (window.navigator.userAgent.toLowerCase().includes('firefox')) {
       return true;
     }
   }
@@ -15,7 +15,7 @@ export const isFirefox = () => {
   return false;
 };
 
-export interface AutoThemeProviderProps extends ThemeableElement<"div"> {
+export interface AutoThemeProviderProps extends ThemeableElement<'div'> {
   /** Whether to automatically change the font and background color */
   autoStyle?: boolean;
   /** Any React node children */
@@ -29,7 +29,7 @@ export interface AutoThemeProviderProps extends ThemeableElement<"div"> {
 const useDarkMode = () => {
   const [darkMode, setDarkMode] = React.useState(
     isWindowDefined && window
-      ? window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? window.matchMedia('(prefers-color-scheme: dark)').matches
       : false
   );
 
@@ -38,7 +38,7 @@ const useDarkMode = () => {
       return;
     }
 
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
     /** Run when the user changes this setting. */
     const changeDarkMode = () => setDarkMode(!darkMode);
@@ -66,13 +66,13 @@ export const AutoThemeProvider = ({
   ...html
 }: AutoThemeProviderProps) => {
   const isDark = useDarkMode();
-  const colorScheme = propsColorScheme || (isDark ? "dark" : "light");
-  const theme = propsTheme || (isFirefox() ? "firefox" : "chrome");
+  const colorScheme = propsColorScheme || (isDark ? 'dark' : 'light');
+  const theme = propsTheme || (isFirefox() ? 'firefox' : 'chrome');
   const style = {
     backgroundColor: all[theme][colorScheme].backgroundColor,
     color: all[theme][colorScheme].textColor,
-    minHeight: "100%",
-    width: "100%",
+    minHeight: '100%',
+    width: '100%',
   };
 
   return (
