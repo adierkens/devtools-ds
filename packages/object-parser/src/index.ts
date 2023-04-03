@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 export interface AST {
   /** Current object key */
   key: string;
@@ -28,14 +29,14 @@ export type DeferredNode = () => Promise<ASTNode>;
 // Object
 export interface ASTObject extends AST, ASTChildren {
   /** Type */
-  type: "object";
+  type: 'object';
   /** Value */
   value: object;
 }
 
 export interface ResolvedASTObject extends AST, ASTResolvedChildren {
   /** Type */
-  type: "object";
+  type: 'object';
   /** Value */
   value: object;
 }
@@ -43,14 +44,14 @@ export interface ResolvedASTObject extends AST, ASTResolvedChildren {
 // Array
 export interface ASTArray extends AST, ASTChildren {
   /** Type */
-  type: "array";
+  type: 'array';
   /** Value */
   value: any[];
 }
 
 export interface ResolvedASTArray extends AST, ASTResolvedChildren {
   /** Type */
-  type: "array";
+  type: 'array';
   /** Value */
   value: any[];
 }
@@ -58,31 +59,31 @@ export interface ResolvedASTArray extends AST, ASTResolvedChildren {
 // Function
 export interface ASTFunction extends AST, ASTChildren {
   /** Type */
-  type: "function";
+  type: 'function';
   /** Value */
   value: Function;
 }
 
 export interface ResolvedASTFunction extends AST, ASTResolvedChildren {
   /** Type */
-  type: "function";
+  type: 'function';
   /** Value */
   value: Function;
 }
 
 // Promise
-export type PromiseState = "pending" | "fulfilled" | "rejected";
+export type PromiseState = 'pending' | 'fulfilled' | 'rejected';
 
 export interface ASTPromise extends AST, ASTChildren {
   /** Type */
-  type: "promise";
+  type: 'promise';
   /** Value */
   value: Promise<any>;
 }
 
 export interface ResolvedASTPromise extends AST, ASTResolvedChildren {
   /** Type */
-  type: "promise";
+  type: 'promise';
   /** Value */
   value: Promise<any>;
 }
@@ -90,14 +91,14 @@ export interface ResolvedASTPromise extends AST, ASTResolvedChildren {
 // Map
 export interface ASTMap extends AST, ASTChildren {
   /** Type */
-  type: "map";
+  type: 'map';
   /** Value */
   value: Map<any, any>;
 }
 
 export interface ResolvedASTMap extends AST, ASTResolvedChildren {
   /** Type */
-  type: "map";
+  type: 'map';
   /** Value */
   value: Map<any, any>;
 }
@@ -105,7 +106,7 @@ export interface ResolvedASTMap extends AST, ASTResolvedChildren {
 // Set
 export interface ASTSet extends AST, ASTChildren {
   /** Type */
-  type: "set";
+  type: 'set';
   /** Value */
   value: Set<any>;
 }
@@ -113,7 +114,7 @@ export interface ASTSet extends AST, ASTChildren {
 //
 export interface ResolvedASTSet extends AST, ASTResolvedChildren {
   /** Type */
-  type: "set";
+  type: 'set';
   /** Value */
   value: Set<any>;
 }
@@ -121,7 +122,7 @@ export interface ResolvedASTSet extends AST, ASTResolvedChildren {
 // Leaf Values
 export interface ASTValue extends AST {
   /** Type */
-  type: "value";
+  type: 'value';
   /** Value */
   value:
     | boolean
@@ -161,12 +162,12 @@ export type SupportedTypes =
   | Function;
 
 export type ObjectTypes =
-  | "object"
-  | "function"
-  | "array"
-  | "promise"
-  | "map"
-  | "set";
+  | 'object'
+  | 'function'
+  | 'array'
+  | 'promise'
+  | 'map'
+  | 'set';
 
 export type ASTNode =
   | ASTObject
@@ -205,7 +206,7 @@ const isArray = (val: object): boolean => {
 export const isObject = (val: object): boolean => {
   return (
     val !== null &&
-    typeof val === "object" &&
+    typeof val === 'object' &&
     !isArray(val) &&
     !(val instanceof Date) &&
     !(val instanceof RegExp) &&
@@ -220,7 +221,7 @@ export const isKnownObject = (val: object): boolean => {
   return (
     isObject(val) ||
     isArray(val) ||
-    typeof val === "function" ||
+    typeof val === 'function' ||
     val instanceof Promise
   );
 };
@@ -232,13 +233,13 @@ export const isKnownObject = (val: object): boolean => {
  */
 export const getPromiseState = (
   promise: Promise<any>
-): Promise<["pending"] | ["rejected", any] | ["fulfilled", any]> => {
+): Promise<['pending'] | ['rejected', any] | ['fulfilled', any]> => {
   // Symbols and RegExps are never content-equal
   const unique = /unique/;
 
   return Promise.race([promise, unique]).then(
-    (result) => (result === unique ? ["pending"] : ["fulfilled", result]),
-    (e) => ["rejected", e]
+    (result) => (result === unique ? ['pending'] : ['fulfilled', result]),
+    (e) => ['rejected', e]
   );
 };
 
@@ -262,13 +263,13 @@ const buildAST = async (
     key,
     depth,
     value,
-    type: "value",
+    type: 'value',
     parent: undefined,
   };
 
   if (value && isKnownObject(value) && depth < 100) {
     const children = [];
-    let t: ObjectTypes = "object";
+    let t: ObjectTypes = 'object';
 
     // Build Array
     if (isArray(value)) {
@@ -285,7 +286,7 @@ const buildAST = async (
         });
       }
 
-      t = "array";
+      t = 'array';
     } else {
       // Get Object Properties
       const keys = Object.getOwnPropertyNames(value);
@@ -294,6 +295,7 @@ const buildAST = async (
         let safeValue: any;
         try {
           safeValue = value[keys[i]];
+          // eslint-disable-next-line no-empty
         } catch (e) {}
 
         children.push(async () => {
@@ -304,22 +306,22 @@ const buildAST = async (
       }
 
       // Change Type for Function
-      if (typeof value === "function") {
-        t = "function";
+      if (typeof value === 'function') {
+        t = 'function';
       }
 
       // Handle Promises
       if (value instanceof Promise) {
         const [status, result] = await getPromiseState(value);
         children.push(async () => {
-          const child = await buildAST("<state>", status, depth + 1, sortKeys);
+          const child = await buildAST('<state>', status, depth + 1, sortKeys);
           child.parent = astNode;
           return child;
         });
-        if (status !== "pending") {
+        if (status !== 'pending') {
           children.push(async () => {
             const child = await buildAST(
-              "<value>",
+              '<value>',
               result,
               depth + 1,
               sortKeys
@@ -329,7 +331,7 @@ const buildAST = async (
           });
         }
 
-        t = "promise";
+        t = 'promise';
       }
 
       // Handle Maps
@@ -338,13 +340,13 @@ const buildAST = async (
         const parsedEntries = entries.map((entry) => {
           const [entryKey, entryValue] = entry;
           return {
-            "<key>": entryKey,
-            "<value>": entryValue,
+            '<key>': entryKey,
+            '<value>': entryValue,
           };
         });
         children.push(async () => {
           const child = await buildAST(
-            "<entries>",
+            '<entries>',
             parsedEntries,
             depth + 1,
             sortKeys
@@ -353,11 +355,11 @@ const buildAST = async (
           return child;
         });
         children.push(async () => {
-          const child = await buildAST("size", value.size, depth + 1, sortKeys);
+          const child = await buildAST('size', value.size, depth + 1, sortKeys);
           child.parent = astNode;
           return child;
         });
-        t = "map";
+        t = 'map';
       }
 
       // Handle Sets
@@ -368,7 +370,7 @@ const buildAST = async (
         });
         children.push(async () => {
           const child = await buildAST(
-            "<entries>",
+            '<entries>',
             parsedEntries,
             depth + 1,
             sortKeys
@@ -377,11 +379,11 @@ const buildAST = async (
           return child;
         });
         children.push(async () => {
-          const child = await buildAST("size", value.size, depth + 1, sortKeys);
+          const child = await buildAST('size', value.size, depth + 1, sortKeys);
           child.parent = astNode;
           return child;
         });
-        t = "set";
+        t = 'set';
       }
     }
 
@@ -389,7 +391,7 @@ const buildAST = async (
     if (value !== Object.prototype && showPrototype) {
       children.push(async () => {
         const child = await buildAST(
-          "<prototype>",
+          '<prototype>',
           Object.getPrototypeOf(value),
           depth + 1,
           sortKeys,
@@ -401,8 +403,8 @@ const buildAST = async (
     }
 
     astNode.type = t;
-    ((astNode as any) as ASTChildren).children = children;
-    ((astNode as any) as ASTChildren).isPrototype = isPrototype;
+    (astNode as any as ASTChildren).children = children;
+    (astNode as any as ASTChildren).isPrototype = isPrototype;
   }
 
   return astNode as ASTNode;
@@ -420,7 +422,7 @@ export const parse = (
 ) => {
   const keys = sortKeys === false ? sortKeys : true;
   const prototypes = includePrototypes === false ? includePrototypes : true;
-  return buildAST("root", data, 0, keys, undefined, prototypes);
+  return buildAST('root', data, 0, keys, undefined, prototypes);
 };
 
 export default parse;
