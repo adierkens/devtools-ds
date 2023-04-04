@@ -27,7 +27,7 @@
   },
   "generators": {
     "@nrwl/js:library": {
-      "bundler": "rollup",
+      "bundler": "tsc",
       "publishable": true,
       "config": "workspace"
     },
@@ -36,6 +36,9 @@
         "babel": true
       },
       "library": {
+        "bundler": "rollup",
+        "style": "css",
+        "publishable": true,
         "unitTestRunner": "vitest"
       }
     }

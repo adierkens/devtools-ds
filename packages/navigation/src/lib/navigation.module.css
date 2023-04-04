@@ -1,0 +1,106 @@
+.divider {
+  width: 1px;
+  height: 2em;
+  background-color: @theme dividerColor;
+}
+
+.nav {
+  width: 100%;
+  color: @theme textColor;
+  overflow-x: auto;
+}
+
+.controls {
+  background-color: @theme backgroundColor;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid @theme dividerColor;
+  overflow-x: auto;
+}
+
+.button {
+  padding: 6px;
+  font-size: 1.1em;
+  height: 2.2em;
+  color: @theme textColor;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus {
+    background-color: @theme hoverBackgroundColor;
+    outline: none;
+  }
+}
+
+.selected {
+  color: @theme selectedTextColor;
+
+  .icon {
+    color: @theme selectedIconColor;
+  }
+}
+
+.tab {
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid transparent;
+}
+
+.firefox {
+  .tab {
+    &:hover,
+    &:focus {
+      border-top: 2px solid @theme hoverBarColor;
+    }
+
+    &.selected {
+      border-top: 2px solid @theme selectedBarColor;
+    }
+  }
+}
+
+.chrome {
+  .tab {
+    &:hover,
+    :focus {
+      border-bottom-color: @theme hoverBarColor;
+    }
+
+    &.selected {
+      border-bottom: 2px solid @theme selectedBarColor;
+    }
+  }
+}
+
+.icon {
+  height: 1.2em;
+  width: 1.2em;
+  font-size: 1.2em;
+  margin-bottom: -0.2em;
+}
+
+.icon:not(:last-child) {
+  margin-right: 0.3em;
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overflow {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}

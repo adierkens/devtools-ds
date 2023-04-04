@@ -1,0 +1,34 @@
+{
+  "name": "dom-inspector",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/dom-inspector/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/dom-inspector/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/dom-inspector",
+        "main": "packages/dom-inspector/src/index.ts",
+        "tsConfig": "packages/dom-inspector/tsconfig.lib.json",
+        "assets": ["packages/dom-inspector/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/vite:test",
+      "outputs": ["coverage/packages/dom-inspector"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/dom-inspector"
+      }
+    }
+  }
+}

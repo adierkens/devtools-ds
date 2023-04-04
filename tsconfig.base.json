@@ -16,9 +16,19 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@devtools-ds/console": ["dist/packages/console"],
+      "@devtools-ds/diagnostic": ["dist/packages/diagnostic"],
+      "@devtools-ds/dom-inspector": ["dist/packages/dom-inspector"],
+      "@devtools-ds/icon": ["dist/packages/icon"],
+      "@devtools-ds/navigation": ["dist/packages/navigation"],
       "@devtools-ds/node": ["dist/packages/node"],
+      "@devtools-ds/object-inspector": [
+        "dist/packages/object-inspector"
+      ],
       "@devtools-ds/object-parser": ["dist/packages/object-parser"],
+      "@devtools-ds/table": ["dist/packages/table"],
       "@devtools-ds/themes": ["dist/packages/themes"],
+      "@devtools-ds/tree": ["dist/packages/tree"]
     }
   },
   "exclude": ["node_modules", "tmp"]
