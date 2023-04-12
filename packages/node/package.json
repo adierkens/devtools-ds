@@ -4,9 +4,6 @@
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "type": "module",
-  "dependencies": {
-    "@devtools-ds/themes": "*"
-  },
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
