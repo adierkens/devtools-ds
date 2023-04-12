@@ -1,1 +1,1 @@
-export * from './lib/object-inspector';
+export * from './lib/object-inspector.js';

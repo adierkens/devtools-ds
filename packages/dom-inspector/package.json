@@ -3,14 +3,10 @@
   "version": "0.0.1",
   "main": "./src/index.js",
   "types": "./src/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./src/index.mjs",
-      "require": "./src/index.js"
-    }
-  },
+  "type": "module",
   "dependencies": {
     "@devtools-ds/tree": "*",
-    "@devtools-ds/node": "*"
+    "@devtools-ds/node": "*",
+    "@devtools-ds/themes": "*"
   }
 }
